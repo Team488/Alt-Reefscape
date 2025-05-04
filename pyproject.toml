@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alt"
+version = "0.0.1"
+description = "Project for the matrix team."
+requires-python = ">= 3.9"
+
+[tool.mypy]
+files = "src"
+python_version = "3.9"
+warn_return_any = false
+warn_unused_configs = true
+disallow_untyped_calls = false
+disallow_untyped_defs = false
+disallow_incomplete_defs = false
+check_untyped_defs = false
+disallow_untyped_decorators = false
+no_implicit_optional = true
+strict_optional = false
+ignore_missing_imports = true
+follow_imports = "silent"
+disallow_subclassing_any = false
+disallow_any_generics = false
+disallow_any_unimported = false
+disallow_any_expr = false
+disallow_any_decorated = false
+disallow_any_explicit = false
+warn_redundant_casts = false
+warn_no_return = false
+warn_unreachable = false
+allow_untyped_globals = true
+allow_redefinition = true
+
+# Disable all error codes
+disable_error_code = [
+    "attr-defined", "index", "operator", "misc", "no-untyped-call", "no-untyped-def", 
+    "var-annotated", "union-attr", "name-defined", "import-untyped", "import-not-found", 
+    "call-arg", "arg-type", "has-type", "assignment", "type-arg", "call-overload", 
+    "return-value", "return", "no-redef", "safe-super"
+]
+
+[[tool.mypy.overrides]]
+module = [
+    "*"
+]
+ignore_missing_imports = true
+follow_imports = "skip"

@@ -1,0 +1,15 @@
+services:
+  my-service:
+    image: xdash-docker-image
+    container_name: orange-pi-alt-container
+    hostname: ${HOSTNAME}  # Uses the current hostname of the system
+    privileged: true  # Equivalent to --privileged flag
+    network_mode: "host" # Expose the container to the network
+    devices:
+      - "/dev/dri/renderD129:/dev/dri/renderD129" # rknpu device
+    volumes:
+      - "/proc/device-tree/compatible:/proc/device-tree/compatible:ro"
+      - "/xbot/config:/xbot/config"
+      - "/dev:/dev"
+      - "/home/pi/Alt:/xbot/Alt"
+    command: ["python", "centralOrangePiProcess.py"]

@@ -1,0 +1,71 @@
+# Workflow that runs our basic build and tests.
+name: Build and Test
+on:
+  push:
+    # Run on pushes to main or any branch with /force-build/ in the name.
+    branches:
+      - main
+      - "**/force-build/**"
+  # Run on pull requests.
+  pull_request:
+env:
+  PYTHON_VERSION: 3.9.21
+jobs:
+  # The Python image build and push. This builds our API, admin, and Airflow
+  # images.
+  docker_build:
+    name: Python Docker Build With OpenCV
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - linux/amd64
+          - linux/arm64
+    timeout-minutes: 60
+    steps:
+      - name: Free Disk Space (Ubuntu)
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: false
+          large-packages: false
+          docker-images: false
+          swap-storage: false
+
+      # Set up emulation to be able to build on multiple platforms.
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Set platform name
+        id: platform_name
+        env:
+          PLATFORM: "${{ matrix.platform }}"
+        run: |
+          echo "PLATFORM_NAME=${PLATFORM#linux/}" >> $GITHUB_OUTPUT
+
+      - name: Build and export
+        id: build
+        uses: docker/build-push-action@v6
+        with:
+          platforms: ${{ matrix.platform }}
+          tags: alt:${{ steps.platform_name.outputs.PLATFORM_NAME }}
+          outputs: type=docker,dest=/tmp/alt_${{ steps.platform_name.outputs.PLATFORM_NAME }}.tar
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+  python_build:
+    name: Python MyPy Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9.21'
+          cache: 'pip'
+      - run: pip install -r dev-requirements.txt
+      - run: mypy

@@ -1,0 +1,15 @@
+[Unit]
+Description=Main-Pipeline-Process
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/var/tmp/xbot/Alt/src
+ExecStart=/var/tmp/xbot/Alt/src/runMainProcess.sh
+Restart=always
+User=pi
+Environment=PATH=/home/pi/.pyenv/bin:/home/pi/.pyenv/shims:/home/pi/.pyenv/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+StandardOutput=journal
+
+[Install]
+WantedBy=multi-user.target
