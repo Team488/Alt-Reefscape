@@ -1,3 +1,7 @@
 Matrix-Alt-Core
 Matrix-Alt-Cameras
 Matrix-Alt-Objectlocalization
+
+robotpy-apriltag==2025.3.2.0
+robotpy-wpimath==2025.3.2.0
+robotpy-wpiutil==2025.3.2.0
