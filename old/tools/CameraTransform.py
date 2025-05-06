@@ -44,13 +44,3 @@ T_camera_to_target: np.ndarray = np.array(
         [0, 0, 0, 1],
     ]
 )
-
-# For demonstration purpose only
-if __name__ == "__main__":
-    # Compute inverse of camera-to-target transform
-    T_target_to_camera = inverse_transform(T_camera_to_target)
-
-    # Compute robot-to-camera transform
-    T_robot_to_camera = T_robot_to_target @ T_target_to_camera
-
-    print("Robot to Camera Transform:\n", T_robot_to_camera)
