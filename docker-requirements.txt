@@ -1,6 +1,0 @@
-XTablesClient
-pycapnp
-
-# rknn toolkit 2
-#src/assets/rknn_toolkit2-2.2.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
-# -r ./requirements_cp39-2.2.0.txt

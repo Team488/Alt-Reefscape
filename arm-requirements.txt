@@ -1,2 +1,0 @@
-# rknn toolkit lite 2 (for arm only!)
-src/assets/rknn_toolkit_lite2-2.2.0-cp39-cp39-linux_aarch64.whl
