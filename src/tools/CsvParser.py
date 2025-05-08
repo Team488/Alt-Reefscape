@@ -1,4 +1,4 @@
-from typing import List, Tuple, Optional, Dict, Any
+from typing import List, Tuple, Optional
 
 ROBOTPOSITIONKEYS = (
     "/RealOutputs/PoseSubsystem/RobotPose/rotation/value",
@@ -13,6 +13,8 @@ class CsvParser:
     
     This parser is designed for CSV files with time-series data where each row
     contains a timestamp, a key, and a value.
+
+    For example roborio network table logs
     """
 
     def __init__(

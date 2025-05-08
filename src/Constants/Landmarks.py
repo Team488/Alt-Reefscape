@@ -1,5 +1,6 @@
 from enum import Enum
-from Units import Types, Conversions
+
+from Alt.Core.Units import Types, Conversions
 
 class MapConstants(Enum):
     @staticmethod

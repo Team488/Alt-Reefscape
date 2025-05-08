@@ -1,6 +1,7 @@
-import cv2
+import json
+
 import numpy as np
-from tools.Constants import CameraIntrinsics
+from Alt.Cameras.Parameters.CameraIntrinsics import CameraIntrinsics
 from robotpy_apriltag import (
     AprilTagField,
     AprilTagFieldLayout,
@@ -8,9 +9,6 @@ from robotpy_apriltag import (
     AprilTagPoseEstimator,
     AprilTagPoseEstimate,
 )
-
-from wpimath.geometry import Transform3d
-import json
 
 
 class AprilTagLocal:
