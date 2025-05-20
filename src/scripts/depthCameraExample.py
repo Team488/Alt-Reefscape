@@ -1,7 +1,7 @@
 
 import cv2
-from Captures import D435Capture, OAKCapture
-from tools.Constants import D435IResolution, OAKDLITEResolution
+from Alt.Cameras.Captures import D435Capture, OAKCapture
+from Alt.Cameras.Constants.resolution import D435IResolution, OAKDLITEResolution
 
 if __name__ == "__main__":
     # pick your type

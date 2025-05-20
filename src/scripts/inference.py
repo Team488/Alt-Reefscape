@@ -1,19 +1,19 @@
-from Core.Agents.Partials.InferenceAgent import InferenceAgentPartial
-from Core.Neo import Neo
-from tools.Constants import InferenceMode, CameraIntrinsicsPredefined, CommonVideos
-from Captures import FileCapture, ConfigurableCameraCapture
+from Alt.Core import Neo
+from Alt.ObjectLocalization.Agents.InferenceAgent import InferenceAgent
+from Alt.ObjectLocalization.Inference.ModelConfig import ModelConfig
+
+from ..Constants.CameraIntrinsics import CameraIntrinsicsPredefined
+from ..Constants.ModelConfigs import ONNXMEDIUM2025
+from  ..tools.load import get_asset_path
+
+from Alt.Cameras.Captures import OpenCVCapture
 
 if __name__ == "__main__":
-    agent = InferenceAgentPartial(
-        ConfigurableCameraCapture(
-            "Common_Video",
-            CommonVideos.ReefscapeCompilation.path,
-            CameraIntrinsicsPredefined.OV9782COLOR,
-        ),
-        InferenceMode.ONNXSMALL2025,
+    agent = InferenceAgent.bind(
+        OpenCVCapture("inference", get_asset_path("reefscapevid.mp4")),
+        modelConfig=ONNXMEDIUM2025,
         showFrames=True,
     )
     n = Neo()
-    n.wakeAgent(agent, isMainThread=False)
-    n.waitForAgentsFinished()
+    n.wakeAgent(agent, isMainThread=True)
     n.shutDown()

@@ -1,6 +1,6 @@
 import time
 
-from Captures import FileCapture
+from Alt.Cameras.Captures import OpenCVCapture
 import cv2
 from time import strftime, localtime
 
@@ -20,7 +20,7 @@ def startWriting():
     ]
 
     captures = [
-        FileCapture(f"http://{hostname}:{port}/{streamName}") for hostname in hostnames
+        OpenCVCapture(hostname, f"http://{hostname}:{port}/{streamName}") for hostname in hostnames
     ]
 
     videowriters = []

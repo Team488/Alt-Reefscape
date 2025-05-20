@@ -1,6 +1,5 @@
 import time
-from functools import partial
-from typing import Optional, Dict, Any
+from typing import Optional, Any
 
 from Alt.Cameras.Agents import CameraUsingAgentBase
 from Alt.Cameras.Captures import ConfigurableCapture
@@ -9,12 +8,16 @@ from ..reefTracking.ReefPacket import ReefPacket
 from ..reefTracking.reefTracker import ReefTracker
 
 
-class ReefTrackingAgentBase(CameraUsingAgentBase):
+class ReefTrackingAgent(CameraUsingAgentBase):
     OBSERVATIONPOSTFIX: str = "OBSERVATIONS"
     """ Agent -> (CameraUsingAgentBase, PositionLocalizingAgentBase) -> TimestampRegulatedAgentBase -> ReefTrackingAgentBase
         This agent adds reef tracking capabilites. Must be used as partial
         If showFrames is True, you must run this agent as main
     """
+    
+    @classmethod
+    def bind(cls, capture: ConfigurableCapture, showFrames : bool = False):
+        return cls.__getBindedAgent(capture=capture, showFrames=showFrames)
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)
@@ -44,14 +47,3 @@ class ReefTrackingAgentBase(CameraUsingAgentBase):
 
     def getDescription(self) -> str:
         return "Gets_Reef_State"
-
-
-def ReefTrackingAgentPartial(
-    capture: ConfigurableCapture, showFrames: bool = False
-) -> Any:
-    """Returns a partially completed ReefTrackingAgent agent. All you have to do is pass it into neo"""
-    return partial(
-        ReefTrackingAgentBase,
-        capture=capture,
-        showFrames=showFrames,
-    )

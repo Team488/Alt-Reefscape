@@ -1,10 +1,10 @@
 from Alt.Core import Neo
 
-from ..Agents.AlignmentProviderAgent import partialAlignmentProviderAgent
+from ..Agents.AlignmentProviderAgent import AlignmentProviderAgent
 from ..Alignment.ReefPostAlignmentProviderBlobs import ReefPostAlignmentProvider
 
 if __name__ == "__main__":
-    alignmentCheckReefLeft = partialAlignmentProviderAgent(
+    alignmentCheckReefLeft = AlignmentProviderAgent.bind(
         alignmentProvider=ReefPostAlignmentProvider(),
         cameraPath=0,
         showFrames=True,

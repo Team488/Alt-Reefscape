@@ -3,7 +3,7 @@ from pathlib import Path
 
 import numpy as np
 
-ASSETSPATH = Path("..", "..", "assets")
+ASSETSPATH = Path(__file__).resolve().parents[2] / "assets"
 
 def get_asset_path(*relative_path : str):
     return ASSETSPATH / os.path.join(relative_path)

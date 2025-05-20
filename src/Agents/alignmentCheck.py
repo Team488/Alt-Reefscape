@@ -1,17 +1,23 @@
 import math
-from functools import partial
 
 import cv2
 import numpy as np
 
+from Alt.Core.Agents import BindableAgent
 from Alt.Cameras.Agents import CameraUsingAgentBase
 from Alt.Cameras.Captures import OpenCVCapture
 
 
 
-class AlignmentChecker(CameraUsingAgentBase):
+class AlignmentChecker(CameraUsingAgentBase, BindableAgent):
     DEFAULTTHRESH = 10
     PHOTONVISIONMJPGURL = "http://localhost:1181/stream.mjpg"
+
+    @classmethod
+    def bind(cls, showFrames: bool, mjpeg_url = PHOTONVISIONMJPGURL):
+        cls.__getBindedAgent(
+            showFrames=showFrames, mjpeg_url=mjpeg_url
+        )
 
     def __init__(self, showFrames: bool, mjpeg_url = PHOTONVISIONMJPGURL):
         super().__init__(
@@ -38,13 +44,9 @@ class AlignmentChecker(CameraUsingAgentBase):
             addBasePrefix=True,
             addOperatorPrefix=False,
         )
-        self.cameraIntrinsics = self.propertyOperator.createProperty(
+        self.cameraIntrinsics = self.propertyOperator.createReadExistingNetworkValueProperty(
             propertyTable="photonvision.Apriltag_Back_Camera.cameraIntrinsics",
             propertyDefault=None,
-            addBasePrefix=False,
-            addOperatorPrefix=False,
-            setDefaultOnNetwork=False,
-            isCustom=True,
         )
         self.threshold_pixels = self.propertyOperator.createProperty(
             propertyTable="threshold_pixels",
@@ -128,6 +130,3 @@ class AlignmentChecker(CameraUsingAgentBase):
     def getDescription(self) -> str:
         return "Looks-At-Camera-April-Tag-Checks-Alignment"
 
-
-def partialAlignmentCheck(showFrames: bool = False):
-    return partial(AlignmentChecker, showFrames=showFrames)

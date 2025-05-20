@@ -1,6 +1,4 @@
-import numpy as np
 from .ReefState import ReefState
-
 
 class ReefUpdater:
     def __init__(

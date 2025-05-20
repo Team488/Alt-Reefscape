@@ -1,4 +1,3 @@
-from functools import partial
 
 import cv2
 import numpy as np
@@ -7,14 +6,17 @@ from Alt.Cameras.Agents import CameraUsingAgentBase
 from Alt.Cameras.Captures import OpenCVCapture
 
 
-
 class VerticalAlignmentChecker(CameraUsingAgentBase):
     DEFAULTTHRESH = 20  # Default threshold in pixels
 
+    @classmethod
+    def bind(cls, showFrames: bool = False, flushTimeMS: int = -1):
+        return cls.__getBindedAgent(showFrames=showFrames, flushTimeMS=flushTimeMS)
+    
     def __init__(self, showFrames: bool, flushTimeMS: int = -1):
         mjpeg_url = "http://localhost:1184/stream.mjpg"
         super().__init__(
-            capture=FileCapture(videoFilePath=mjpeg_url, flushTimeMS=flushTimeMS),
+            capture=OpenCVCapture(name="alignment", capturePath=mjpeg_url, flushTimeMS=flushTimeMS),
             showFrames=showFrames,
         )
 
@@ -157,9 +159,3 @@ class VerticalAlignmentChecker(CameraUsingAgentBase):
 
     def getDescription(self) -> str:
         return "Detects-Vertical-Edges-For-AprilTag-Alignment"
-
-
-def partialVerticalAlignmentCheck(showFrames: bool = False, flushTimeMS: int = -1):
-    return partial(
-        VerticalAlignmentChecker, showFrames=showFrames, flushTimeMS=flushTimeMS
-    )

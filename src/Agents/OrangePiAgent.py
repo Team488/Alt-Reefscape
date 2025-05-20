@@ -1,12 +1,10 @@
 from enum import Enum
 import socket
-from Alt.Cameras.Captures import OpenCVCapture, CaptureWIntrinsics
+
+from ..Constants.Captures import OpenCvWIntrinsics
 
 from ..Constants.CameraIntrinsics import CameraIntrinsicsPredefined
-from .ReefTrackingAgentBase import ReefTrackingAgentBase
-
-class Capture(OpenCVCapture, CaptureWIntrinsics):
-    pass
+from .ReefTrackingAgent import ReefTrackingAgent
 
 class CameraName(Enum):
     REARRIGHT = "photonvisionrearright"
@@ -20,7 +18,7 @@ def getCameraName():
     return CameraName(name)
 
 
-class OrangePiAgent(ReefTrackingAgentBase):
+class OrangePiAgent(ReefTrackingAgent):
     """Agent -> CameraUsingAgentBase -> ReefTrackingAgentBase -> OrangePiAgent
 
     Agent to be run on the orange pis"""
@@ -30,11 +28,12 @@ class OrangePiAgent(ReefTrackingAgentBase):
         # # camera values
         # cameraIntrinsics, _, _ = getCameraValues2024(self.device_name)
 
-        cap = Capture("Orange_Pi_COLOR",
-                    "/dev/color_camera",)
-        
-        cap.setIntrinsics(CameraIntrinsicsPredefined.OV9782COLOR)
-        
+        cap = OpenCvWIntrinsics(
+            "Orange_Pi_COLOR",
+            "/dev/color_camera",
+            CameraIntrinsicsPredefined.OV9782COLOR
+        )
+                
         super().__init__(
             capture=cap,
             showFrames=False,

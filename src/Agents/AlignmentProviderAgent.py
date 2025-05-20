@@ -1,16 +1,22 @@
-import math
-import cv2
-import numpy as np
+from Alt.Core.Agents import BindableAgent
 from Alt.Cameras.Agents import CameraUsingAgentBase
 from Alt.Cameras.Captures import OpenCVCapture
-from functools import partial
 
 from ..Alignment.AlignmentProvider import AlignmentProvider
 
 
-class AlignmentProviderAgent(CameraUsingAgentBase):
+class AlignmentProviderAgent(CameraUsingAgentBase, BindableAgent):
     DEFAULTTHRESH = 10
 
+    @classmethod
+    def bind(cls,
+        alignmentProvider: AlignmentProvider,
+        cameraPath="http://localhost:1181/stream.mjpg",
+        showFrames=False,
+        flushCamMs=-1,
+    ):
+        return cls.__getBindedAgent(alignmentProvider, cameraPath, showFrames, flushCamMs)
+    
     def __init__(
         self,
         alignmentProvider: AlignmentProvider,
@@ -68,18 +74,5 @@ class AlignmentProviderAgent(CameraUsingAgentBase):
 
     def getDescription(self) -> str:
         return "Looks-Through-Camera-Checks-Alignment"
+        
 
-
-def partialAlignmentProviderAgent(
-    alignmentProvider: AlignmentProvider,
-    cameraPath="http://localhost:1181/stream.mjpg",
-    showFrames=False,
-    flushCamMs=-1,
-):
-    return partial(
-        AlignmentProviderAgent,
-        alignmentProvider=alignmentProvider,
-        cameraPath=cameraPath,
-        showFrames=showFrames,
-        flushCamMs=flushCamMs,
-    )

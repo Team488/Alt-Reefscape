@@ -1,10 +1,8 @@
-import base64
-import io
-import time
-import capnp
-import cv2
-import numpy as np
 from typing import Dict
+import base64
+
+# must keep this import for the below _capnp import to work!!
+import capnp
 from assets.schemas import reefStatePacket_capnp
 
 
@@ -24,8 +22,6 @@ class ReefPacket:
       --------------------------
       |     April Tag id       |
       --------------------------
-
-
 
 
     """

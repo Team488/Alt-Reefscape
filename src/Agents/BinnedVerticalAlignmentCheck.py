@@ -1,10 +1,9 @@
 from collections import defaultdict
 import cv2
 import numpy as np
-from Core.Agents.Abstract import CameraUsingAgentBase
-from Captures.FileCapture import FileCapture
-from tools.Constants import SimulationEndpoints
-from functools import partial
+
+from Alt.Cameras.Agents import CameraUsingAgentBase
+from Alt.Cameras.Captures.OpenCVCapture import OpenCVCapture
 
 
 class BinnedVerticalAlignmentChecker(CameraUsingAgentBase):
@@ -13,6 +12,10 @@ class BinnedVerticalAlignmentChecker(CameraUsingAgentBase):
     TUNEDWIDTH = 960
     TUNEDHEIGHT = 720
 
+    @classmethod
+    def bind(cls, capture, showFrames = False):
+        return cls.__getBindedAgent(capture, showFrames)
+
     def __init__(
         self,
         showFrames: bool,
@@ -20,7 +23,7 @@ class BinnedVerticalAlignmentChecker(CameraUsingAgentBase):
         mjpeg_url: str = "http://localhost:1181/stream.mjpg",
     ):
         super().__init__(
-            capture=FileCapture(videoFilePath=mjpeg_url, flushTimeMS=flushTimeMS),
+            capture=OpenCVCapture(name="aligment_cap", capturePath=mjpeg_url, flushTimeMS=flushTimeMS),
             showFrames=showFrames,
         )
 
@@ -285,16 +288,3 @@ class BinnedVerticalAlignmentChecker(CameraUsingAgentBase):
 
     def getDescription(self) -> str:
         return "Detects-Vertical-Edges-For-AprilTag-Alignment"
-
-
-def partialVerticalAlignmentCheck(
-    showFrames: bool = False,
-    flushTimeMS: int = -1,
-    mjpeg_url="http://localhost:1181/stream.mjpg",
-):
-    return partial(
-        BinnedVerticalAlignmentChecker,
-        showFrames=showFrames,
-        flushTimeMS=flushTimeMS,
-        mjpeg_url=mjpeg_url,
-    )
