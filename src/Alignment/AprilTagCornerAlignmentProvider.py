@@ -1,15 +1,13 @@
 from collections import defaultdict
 import cv2
 import numpy as np
-from abstract.AlignmentProvider import AlignmentProvider
-from Core import getChildLogger
+from .AlignmentProvider import AlignmentProvider
+from Alt.Core import getChildLogger
 
 Sentinel = getChildLogger("April_Tag_Alignment_Provider")
 
 
 class BinnedVerticalAlignmentChecker(AlignmentProvider):
-    # testHostname = "photonvisionfrontright"  # for testing ONLY
-    testHostname = None
     TUNEDWIDTH = 960
     TUNEDHEIGHT = 720
 
@@ -21,27 +19,27 @@ class BinnedVerticalAlignmentChecker(AlignmentProvider):
         self.createConstants()
 
     def createConstants(self):
-        self.sobel_threshold = self.propertyOperator.createProperty(
+        self.sobel_threshold = self.agent.propertyOperator.createProperty(
             propertyTable="sobelThreshold",
             propertyDefault=70,
             setDefaultOnNetwork=True,
         )
-        self.threshold_to_last_used = self.propertyOperator.createProperty(
+        self.threshold_to_last_used = self.agent.propertyOperator.createProperty(
             propertyTable="threshold_to_last_used_size",
             propertyDefault=25,
             setDefaultOnNetwork=True,
         )
-        self.bin_size_pixels = self.propertyOperator.createProperty(
+        self.bin_size_pixels = self.agent.propertyOperator.createProperty(
             propertyTable="binning_size_pixels",
             propertyDefault=30,
             setDefaultOnNetwork=True,
         )
-        self.min_edge_height = self.propertyOperator.createProperty(
+        self.min_edge_height = self.agent.propertyOperator.createProperty(
             propertyTable="min_vertical_edge_height",
             propertyDefault=250,  # Minimum height in pixels for a valid edge
             setDefaultOnNetwork=True,
         )
-        self.distanceMemoryFrames = self.propertyOperator.createProperty(
+        self.distanceMemoryFrames = self.agent.propertyOperator.createProperty(
             propertyTable="number_of_frames_to_keep_memory",
             propertyDefault=30,
             setDefaultOnNetwork=True,

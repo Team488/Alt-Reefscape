@@ -1,4 +1,4 @@
-from Core.Neo import Neo
+from Alt.Core import Neo
 from Core.Agents.Abstract import ReefTrackingAgentPartial
 from tools.Constants import (
     CameraIntrinsicsPredefined,

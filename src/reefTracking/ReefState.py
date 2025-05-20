@@ -1,16 +1,16 @@
-import math
-from typing import Dict, Optional
 import json
+from typing import Dict, Optional, List
 
 import numpy as np
-from tools.Constants import ATLocations, ReefBranches, TEAM
-from Core import getChildLogger
-from tools.Units import LengthType, RotationType
-from coreinterface.ReefPacket import ReefPacket
-from assets.schemas import reefStatePacket_capnp
-
 from JXTABLES import XTableValues_pb2 as XTableValue
-from typing import List
+
+from Alt.Core import getChildLogger
+from Alt.Core.Constants.Teams import TEAM
+from Alt.Core.Units.Types import Length
+
+from ..Constants.AprilTags import ATLocations
+from .Reef import ReefBranches
+from .ReefPacket import ReefPacket, reefStatePacket_capnp
 
 Sentinel = getChildLogger("Reef_State")
 
@@ -276,7 +276,7 @@ class ReefState:
         return offset_col, mapbacking
 
     def __getDist(self, robotPos2CMRAd: tuple[float, float, float], atId: int):
-        atPoseXYCM = ATLocations.get_pose_by_id(atId, length=LengthType.CM)[0][:2]
+        atPoseXYCM = ATLocations.get_pose_by_id(atId, length=Length.CM)[0][:2]
         robotXYCm = robotPos2CMRAd[:2]
         return np.linalg.norm((np.subtract(atPoseXYCM, robotXYCm)))
 

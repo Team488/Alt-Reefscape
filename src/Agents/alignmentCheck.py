@@ -1,23 +1,21 @@
 import math
+from functools import partial
 
 import cv2
 import numpy as np
-from Core.Agents.Abstract import CameraUsingAgentBase
-from Captures.FileCapture import FileCapture
 
-from functools import partial
-from abstract.Agent import Agent
+from Alt.Cameras.Agents import CameraUsingAgentBase
+from Alt.Cameras.Captures import OpenCVCapture
 
-from abstract.Agent import Agent
 
 
 class AlignmentChecker(CameraUsingAgentBase):
     DEFAULTTHRESH = 10
+    PHOTONVISIONMJPGURL = "http://localhost:1181/stream.mjpg"
 
-    def __init__(self, showFrames: bool):
-        mjpeg_url = "http://localhost:1181/stream.mjpg"
+    def __init__(self, showFrames: bool, mjpeg_url = PHOTONVISIONMJPGURL):
         super().__init__(
-            capture=FileCapture(videoFilePath=mjpeg_url), showFrames=showFrames
+            capture=OpenCVCapture(name=mjpeg_url, capturePath=mjpeg_url), showFrames=showFrames
         )
 
     def create(self) -> None:

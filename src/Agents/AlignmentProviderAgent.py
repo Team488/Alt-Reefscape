@@ -1,11 +1,11 @@
 import math
 import cv2
 import numpy as np
-from Core.Agents.Abstract import CameraUsingAgentBase
-from Captures.FileCapture import FileCapture
+from Alt.Cameras.Agents import CameraUsingAgentBase
+from Alt.Cameras.Captures import OpenCVCapture
 from functools import partial
 
-from abstract.AlignmentProvider import AlignmentProvider
+from ..Alignment.AlignmentProvider import AlignmentProvider
 
 
 class AlignmentProviderAgent(CameraUsingAgentBase):
@@ -19,14 +19,14 @@ class AlignmentProviderAgent(CameraUsingAgentBase):
         flushCamMs=-1,
     ):
         super().__init__(
-            capture=FileCapture(videoFilePath=cameraPath, flushTimeMS=flushCamMs),
+            capture=OpenCVCapture(name="aligment_cap", capturePath=cameraPath, flushTimeMS=flushCamMs),
             showFrames=showFrames,
         )
         self.alignmentProvider = alignmentProvider
 
     def create(self):
         super().create()
-        self.alignmentProvider._inject(self.propertyOperator)
+        self.alignmentProvider._injectAgent(self.propertyOperator)
         self.alignmentProvider.create()
 
         self.leftDistanceProp = self.propertyOperator.createCustomReadOnlyProperty(
@@ -70,7 +70,7 @@ class AlignmentProviderAgent(CameraUsingAgentBase):
         return "Looks-Through-Camera-Checks-Alignment"
 
 
-def partialAlignmentCheck(
+def partialAlignmentProviderAgent(
     alignmentProvider: AlignmentProvider,
     cameraPath="http://localhost:1181/stream.mjpg",
     showFrames=False,

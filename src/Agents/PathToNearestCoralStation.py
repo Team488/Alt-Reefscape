@@ -1,11 +1,9 @@
 import math
 
-import cv2
-import numpy as np
-
-from abstract.Agent import Agent
-from pathplanning.nmc import fastMarchingMethodRPC
 from JXTABLES import XTableValues_pb2 as XTableValues
+
+from Alt.Core.Agents import Agent
+from Alt.Pathplanning.nmc import fastMarchingMethodRPC
 
 
 class PathToNearestCoralStation(Agent):
@@ -19,28 +17,25 @@ class PathToNearestCoralStation(Agent):
     blueCoralStations = [blueRightCoralStation, blueLeftCoralStation]
 
     def create(self) -> None:
-        self.bezierPathToNearestCoralStation = (
-            self.propertyOperator.createCustomReadOnlyProperty(
-                propertyTable="BEZIER_PATH_TO_NEAREST_CORAL_STATION",
-                addBasePrefix=False,
-                addOperatorPrefix=False,
-            )
+        self.bezierPathToNearestCoralStation = self.propertyOperator.createCustomReadOnlyProperty(
+            propertyTable="BEZIER_PATH_TO_NEAREST_CORAL_STATION",
+            addBasePrefix=False,
+            addOperatorPrefix=False,
         )
-        self.pose = self.propertyOperator.createProperty(
+        
+        self.pose = self.propertyOperator.createCustomProperty(
             propertyTable="PoseSubsystem.RobotPose",
             propertyDefault=None,
             addBasePrefix=False,
             addOperatorPrefix=False,
             setDefaultOnNetwork=False,
-            isCustom=True,
         )
-        self.team = self.propertyOperator.createProperty(
+        self.team = self.propertyOperator.createCustomProperty(
             propertyTable="TEAM",
             propertyDefault=None,
             addBasePrefix=False,
             addOperatorPrefix=False,
             setDefaultOnNetwork=False,
-            isCustom=True,
         )
 
     def get_nearest_point(self, start_x, start_y, points):

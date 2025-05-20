@@ -1,10 +1,12 @@
-from collections import defaultdict
-import cv2
 import io
 from PIL import Image
+
+import cv2
 import numpy as np
-from abstract.AlignmentProvider import AlignmentProvider
-from Core import PropertyOperator, getChildLogger
+from Alt.Core import getChildLogger
+
+
+from .AlignmentProvider import AlignmentProvider
 from doctr.models import detection_predictor
 from doctr.io import DocumentFile
 from doctr.utils.geometry import detach_scores

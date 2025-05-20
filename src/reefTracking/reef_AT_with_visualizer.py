@@ -11,28 +11,20 @@ Steps:
 
 Measurement in inches
 """
+import json
+from threading import Thread
 import cv2
 import numpy as np
 from robotpy_apriltag import (
-    AprilTagField,
-    AprilTagFieldLayout,
     AprilTagDetector,
     AprilTagPoseEstimator,
 )
 
-from wpimath.geometry import Transform3d
-import json
-
-from Reef import Reef, Alliance
 from ultralytics import YOLO
 
 
-import time
-import random
-from kivy.clock import Clock
-from threading import Thread
-from ReefVisualizer import ReefVisualizer
-
+from .Reef import Reef, Alliance
+from .ReefVisualizer import ReefVisualizer
 
 def run_AT_detection(app, image) -> None:
     global width, height

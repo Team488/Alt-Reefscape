@@ -1,14 +1,8 @@
-from Captures import FileCapture
 import cv2
-from time import strftime, localtime
-from abstract import Agent
 
-
-def getTimeStr():
-    return strftime("%Y-%m-%d_%H-%M-%S", localtime())
-
-
-from abstract.Agent import Agent
+from Alt.Core.Agents import Agent
+from Alt.Core.Utils.timeFmt import getTimeStr
+from Alt.Cameras.Captures import OpenCVCapture
 
 
 class orinIngestorAgent(Agent):
@@ -23,7 +17,7 @@ class orinIngestorAgent(Agent):
     def create(self) -> None:
         # for example here i can create a propery to configure what to call myself
         self.captures = [
-            FileCapture(f"http://{hostname}:{self.port}/{self.streamName}")
+            OpenCVCapture("orinFeed", f"http://{hostname}:{self.port}/{self.streamName}")
             for hostname in self.hostnames
         ]
 
@@ -65,8 +59,6 @@ class orinIngestorAgent(Agent):
         pass
 
     def isRunning(self) -> bool:
-        # condition to keep task running here
-        # for example, i want to run only 50 times. Thus i will be running if the number of times i have run is less than 50
         return len(self.captures) > 0
 
     def forceShutdown(self) -> None:

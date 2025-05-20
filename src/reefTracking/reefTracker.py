@@ -1,19 +1,16 @@
-import time
+from typing import Optional
+
 import cv2
-import json
 import numpy as np
-from os.path import join
-from typing import Dict, Optional
-from reefTracking.aprilTagHelper import AprilTagLocal
-from tools.Constants import (
-    ATLocations,
-    CameraIntrinsics,
-    CameraExtrinsics,
-    ATCameraExtrinsics,
-)
-from tools import Calculator, UnitConversion
-from Core import getChildLogger
-from Core.ConfigOperator import staticLoad
+
+from Alt.Core import getChildLogger
+from Alt.Cameras.Parameters.CameraIntrinsics import CameraIntrinsics
+
+from ..Constants.AprilTags import ATLocations
+from ..math import affline4x4utils
+from ..tools import load
+from .aprilTagHelper import AprilTagLocal
+
 
 
 ### CAD Offset:
@@ -198,7 +195,7 @@ algaeBoxOffsets = [
 
 
 def getClosest3FacesCoral(tag_to_cam_translation, frame):
-    pitch, yaw, _ = Calculator.extract_pitch_yaw_roll(
+    pitch, yaw, _ = affline4x4utils.extract_angles(
         tag_to_cam_translation, format="XYZ"
     )
     # cv2.putText(
@@ -210,7 +207,7 @@ def getClosest3FacesCoral(tag_to_cam_translation, frame):
 
 
 def getClosest3FacesAlgae(tag_to_cam_translation, frame):
-    pitch, yaw, _ = Calculator.extract_pitch_yaw_roll(
+    pitch, yaw, _ = affline4x4utils.extract_angles(
         tag_to_cam_translation, format="XYZ"
     )
     # cv2.putText(
@@ -269,22 +266,17 @@ def backProjWhite(labImage, threshold=120):
     return white_mask
 
 
-# purpleHist = np.load("assets/purpleReefPostHist.npy")
-# # purpleHist = np.load("assets/simulationPurpleReefPost.npy")
-purpleHistLoad = staticLoad(
-    join("assets", "histograms", "reef_post_hist.npy"), isRelativeToSource=True
+
+purpleHist = load.load_asset_numpy(
+    "histograms", "reef_post_hist.npy"
 )
-purpleHist, purpleHistMTime = (
-    purpleHistLoad if purpleHistLoad is not None else (None, None)
+whiteHist = load.load_asset_numpy(
+    "histograms", "whiteCoralHistBAD.npy"
 )
-whiteHistLoad = staticLoad(
-    join("assets", "histograms", "whiteCoralHistBAD.npy"), isRelativeToSource=True
+algaeHist = load.load_asset_numpy(
+    "histograms", "blueAlgaeHist.npy"
 )
-whiteHist, whiteHistMTime = whiteHistLoad if whiteHistLoad is not None else (None, None)
-algaeHistLoad = staticLoad(
-    join("assets", "histograms", "blueAlgaeHist.npy"), isRelativeToSource=True
-)
-algaeHist, algaeHistMTime = algaeHistLoad if algaeHistLoad is not None else (None, None)
+
 objThresh = 0.2
 blockerThresh = 0.2
 fullpurpleThresh = 0.7

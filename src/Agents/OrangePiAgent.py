@@ -1,15 +1,12 @@
 from enum import Enum
 import socket
-from Core.Agents.Abstract.ReefTrackingAgentBase import ReefTrackingAgentBase
-from tools import calibration
-from tools.Constants import (
-    getCameraValues2024,
-    CommonVideos,
-    SimulationEndpoints,
-    CameraIntrinsicsPredefined,
-)
-from Captures import ConfigurableCameraCapture
+from Alt.Cameras.Captures import OpenCVCapture, CaptureWIntrinsics
 
+from ..Constants.CameraIntrinsics import CameraIntrinsicsPredefined
+from .ReefTrackingAgentBase import ReefTrackingAgentBase
+
+class Capture(OpenCVCapture, CaptureWIntrinsics):
+    pass
 
 class CameraName(Enum):
     REARRIGHT = "photonvisionrearright"
@@ -33,12 +30,13 @@ class OrangePiAgent(ReefTrackingAgentBase):
         # # camera values
         # cameraIntrinsics, _, _ = getCameraValues2024(self.device_name)
 
+        cap = Capture("Orange_Pi_COLOR",
+                    "/dev/color_camera",)
+        
+        cap.setIntrinsics(CameraIntrinsicsPredefined.OV9782COLOR)
+        
         super().__init__(
-            capture=ConfigurableCameraCapture(
-                "Orange_Pi_COLOR",
-                "/dev/color_camera",
-                CameraIntrinsicsPredefined.OV9782COLOR,
-            ),
+            capture=cap,
             showFrames=False,
             cameraIntrinsics=CameraIntrinsicsPredefined.OV9782COLOR,
         )

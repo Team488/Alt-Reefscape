@@ -1,11 +1,6 @@
-import math
-
-import cv2
-import numpy as np
-
-from abstract.Agent import Agent
-from pathplanning.nmc import fastMarchingMethodRPC
-from JXTABLES import XTableValues_pb2 as XTableValues, XTableValues_pb2
+from JXTABLES import XTableValues_pb2 as XTableValues
+from Alt.Core.Agents import Agent
+from Alt.Pathplanning.nmc import fastMarchingMethodRPC
 
 
 class PathToNearestBarge(Agent):
@@ -26,25 +21,23 @@ class PathToNearestBarge(Agent):
                 addOperatorPrefix=False,
             )
         )
-        self.pose = self.propertyOperator.createProperty(
+        self.pose = self.propertyOperator.createCustomProperty(
             propertyTable="PoseSubsystem.RobotPose",
             propertyDefault=None,
             addBasePrefix=False,
             addOperatorPrefix=False,
             setDefaultOnNetwork=False,
-            isCustom=True,
         )
         self.distanceFromBarge = self.propertyOperator.createProperty(
             propertyTable="PathToNearestBarge.distanceFromBarge-m",
             propertyDefault=1,
         )
-        self.team = self.propertyOperator.createProperty(
+        self.team = self.propertyOperator.createCustomProperty(
             propertyTable="TEAM",
             propertyDefault=None,
             addBasePrefix=False,
             addOperatorPrefix=False,
             setDefaultOnNetwork=False,
-            isCustom=True,
         )
 
     def get_nearest_point(self, start_x, start_y, alliance):

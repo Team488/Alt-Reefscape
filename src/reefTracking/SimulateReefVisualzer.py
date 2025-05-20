@@ -1,6 +1,5 @@
 import time
 import random
-from kivy.clock import Clock
 from threading import Thread
 from ReefVisualizer import ReefVisualizer
 

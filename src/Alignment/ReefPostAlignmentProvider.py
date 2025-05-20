@@ -1,7 +1,7 @@
 import time
 import cv2
 import numpy as np
-from abstract.AlignmentProvider import AlignmentProvider
+from .AlignmentProvider import AlignmentProvider
 from Core import getChildLogger
 from Core.ConfigOperator import staticLoad
 from tools import generalutils
@@ -22,6 +22,8 @@ class ReefPostAlignmentProvider(AlignmentProvider):
         self.hist, self.mtime = staticLoad(
             "assets/histograms/reef_post_hist.npy", isRelativeToSource=True
         )
+
+        self.agent
 
         # Adjustable processing parameters
         self.sobelksize = self.propertyOperator.createProperty("sobelksize", 3)

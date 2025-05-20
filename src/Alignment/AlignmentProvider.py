@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 
 import numpy as np
 
-from Core.PropertyOperator import PropertyOperator
+from Alt.Core.Agents import Agent
 
 
 class AlignmentProvider(ABC):
@@ -11,8 +11,8 @@ class AlignmentProvider(ABC):
     NOTE: If the alignment provider is color based (Override the method for isColorBased()), the provider will expect a color frame
     """
 
-    def _inject(self, propertyOperator: PropertyOperator):
-        self.propertyOperator = propertyOperator
+    def _injectAgent(self, agent: Agent):
+        self.agent = agent
 
     @abstractmethod
     def __init__(self) -> None:

@@ -1,7 +1,7 @@
+
+from queue import Queue
+
 import kivy
-
-from enum import Enum
-
 from kivy.app import App
 from kivy.uix.label import Label
 from kivy.uix.relativelayout import RelativeLayout
@@ -10,7 +10,6 @@ from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.core.window import Window
 
-from queue import Queue
 
 
 class HexagonLayout(RelativeLayout):
@@ -234,9 +233,8 @@ class HexagonLayout(RelativeLayout):
             )
 
 
+
 layout = HexagonLayout()
-
-
 class ReefVisualizerApp(App):
     def build(self):
         return layout

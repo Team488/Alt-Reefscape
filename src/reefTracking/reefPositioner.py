@@ -1,9 +1,11 @@
-import math
 from typing import Union
-import cv2
-import numpy as np
-from tools.Constants import CameraExtrinsics, MapConstants, CameraIntrinsicsPredefined
+import math
 
+import numpy as np
+
+from Alt.Cameras.Parameters import CameraExtrinsics, MapConstants, CameraIntrinsics
+
+# why did i make this so confusing?
 # mappings from reef_idx -> april tag id
 # blueAtMap = {0: 21, 1: 22, 2: 17, 3: 18, 4: 19, 5: 20}
 blueAtMap = {0: 21, 1: 20, 2: 19, 3: 18, 4: 17, 5: 22}
@@ -112,7 +114,7 @@ class ReefPositioner:
         robot_pos_cm: tuple[int, int],
         robot_yaw_rad: float,
         camera_extr: CameraExtrinsics,
-        camera_intr: CameraIntrinsicsPredefined,
+        camera_intr: CameraIntrinsics,
     ) -> tuple[float, float, float, tuple[int]]:
         return self.getPostCoordinates(
             isBlueReef,

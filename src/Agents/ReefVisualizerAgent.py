@@ -1,20 +1,16 @@
-import time
-import random
-from kivy.clock import Clock
-from threading import Thread
-from reefTracking.ReefVisualizer import ReefVisualizerApp
-from reefTracking import ReefVisualizer
-from reefTracking.Reef import Reef, Alliance
-from tools.Constants import TEAM
-from functools import partial
+from Alt.Core.Agents import Agent
+from Alt.Core.Constants.Teams import TEAM
 
-from abstract.Agent import Agent
-from coreinterface.ReefPacket import ReefPacket
+from ..reefTracking.ReefVisualizer import ReefVisualizerApp
+from ..reefTracking.Reef import Reef, Alliance
+from ..reefTracking.ReefPacket import ReefPacket
 
 
 class ReefVisualizerAgent(Agent):
     def __init__(self, **kwargs) -> None:
-        self.visualizer = kwargs.get("visualizer")
+        super().__init__(**kwargs)
+        self.visualizer = ReefVisualizerApp()
+        self.layout = self.visualizer.build()
         self.reef = Reef(Alliance.BLUE)
         self.branch_idx = ["L2", "L3", "L4"]
         self.visualizer_map_render = {}
@@ -34,23 +30,21 @@ class ReefVisualizerAgent(Agent):
         self.xclient.subscribe(
             "REEFMAP_STATES", consumer=lambda ret: self.__updateVisualizer(ret)
         )
+
         team = self.getTeam()
         if team == TEAM.RED:
             self.reef = Reef(Alliance.RED)
         elif team == TEAM.BLUE:
             self.reef = Reef(Alliance.BLUE)
         else:
-            raise Exception("Invalid Team Reading from XTables")
-
-    def runPeriodic(self) -> None:
-        super().runPeriodic()
+            raise RuntimeError("Invalid Team Reading from XTables")
 
     def runVisualizer(self):
-        if self.visualizer is not None:
+        if self.layout is not None:
             for key, value in self.visualizer_map_render.items():
-                self.visualizer.queue_color_update(key, value)  # queue and update the U
+                self.layout.queue_color_update(key, value)  # queue and update the U
         else:
-            print(self.visualizer, " is None")
+            raise RuntimeError("Visualizer layout is none!")
 
     def __updateVisualizer(self, ret) -> None:
         # list[tuple[int,int,float]]
@@ -104,8 +98,3 @@ class ReefVisualizerAgent(Agent):
     def onClose(self) -> None:
         super().onClose()
         self.xclient.unsubscribe("REEFMAP_STATES", consumer=self.__updateVisualizer)
-
-
-def ReefVisualizerAgentPartial(visualizer):
-    """Returns a partially completed ReefVisualizerAgent. All you have to do is pass it into neo"""
-    return partial(ReefVisualizerAgent, visualizer=visualizer)
