@@ -36,9 +36,10 @@ class ReefTrackingAgent(CameraUsingAgentBase):
     def runPeriodic(self) -> None:
         super().runPeriodic()
 
-        outCoral, outAlgae, atOutput = self.tracker.getAllTracks(
-            self.latestFrameMain, drawBoxes=self.showFrames or self.sendFrame
-        )
+        with self.timer.run("getReefTracks"):
+            outCoral, outAlgae, atOutput = self.tracker.getAllTracks(
+                self.latestFrameMain, drawBoxes=False# self.showFrames or self.sendFrame
+            )
 
         reefPkt = ReefPacket.createPacket(
             outCoral, outAlgae, "helloo", time.time() * 1000

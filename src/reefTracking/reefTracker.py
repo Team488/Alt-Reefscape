@@ -399,11 +399,6 @@ class ReefTracker:
             tag_to_reef_homography,
         )
 
-        camera_to_at = np.dot(
-            tagPoseMatrix,
-            np.zeros(4),
-        )
-
         total_color_corners = []
         for reefBoxOffset in reefBoxOffsets:
             color_corners = []
