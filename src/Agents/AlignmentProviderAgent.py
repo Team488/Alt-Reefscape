@@ -15,7 +15,7 @@ class AlignmentProviderAgent(CameraUsingAgentBase, BindableAgent):
         showFrames=False,
         flushCamMs=-1,
     ):
-        return cls.__getBindedAgent(alignmentProvider, cameraPath, showFrames, flushCamMs)
+        return cls._getBindedAgent(alignmentProvider, cameraPath, showFrames, flushCamMs)
     
     def __init__(
         self,

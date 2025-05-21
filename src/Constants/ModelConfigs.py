@@ -58,7 +58,6 @@ ULTRALYTICSMED2025 = ModelConfig(
 ALCOROULTRALYTICSSMALL2025BAD = ModelConfig(
     get_asset_path("yolov8s_fp32_BADDD.pt"),
     (ALGAE, CORAL, ROBOT),
-    2025,
     Backend.ULTRALYTICS,
     YoloType.V8,
 )

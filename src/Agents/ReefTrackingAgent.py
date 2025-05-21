@@ -17,7 +17,7 @@ class ReefTrackingAgent(CameraUsingAgentBase):
     
     @classmethod
     def bind(cls, capture: ConfigurableCapture, showFrames : bool = False):
-        return cls.__getBindedAgent(capture=capture, showFrames=showFrames)
+        return cls._getBindedAgent(capture=capture, showFrames=showFrames)
 
     def __init__(self, **kwargs: Any) -> None:
         super().__init__(**kwargs)

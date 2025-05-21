@@ -15,7 +15,7 @@ class AlignmentChecker(CameraUsingAgentBase, BindableAgent):
 
     @classmethod
     def bind(cls, showFrames: bool, mjpeg_url = PHOTONVISIONMJPGURL):
-        cls.__getBindedAgent(
+        cls._getBindedAgent(
             showFrames=showFrames, mjpeg_url=mjpeg_url
         )
 

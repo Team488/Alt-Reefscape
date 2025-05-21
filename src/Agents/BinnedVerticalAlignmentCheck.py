@@ -14,7 +14,7 @@ class BinnedVerticalAlignmentChecker(CameraUsingAgentBase):
 
     @classmethod
     def bind(cls, capture, showFrames = False):
-        return cls.__getBindedAgent(capture, showFrames)
+        return cls._getBindedAgent(capture, showFrames)
 
     def __init__(
         self,

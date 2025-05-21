@@ -11,7 +11,7 @@ class VerticalAlignmentChecker(CameraUsingAgentBase):
 
     @classmethod
     def bind(cls, showFrames: bool = False, flushTimeMS: int = -1):
-        return cls.__getBindedAgent(showFrames=showFrames, flushTimeMS=flushTimeMS)
+        return cls._getBindedAgent(showFrames=showFrames, flushTimeMS=flushTimeMS)
     
     def __init__(self, showFrames: bool, flushTimeMS: int = -1):
         mjpeg_url = "http://localhost:1184/stream.mjpg"
